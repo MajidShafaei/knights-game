@@ -1,0 +1,15 @@
+{
+    "name": "majidshafaei/knights-game",
+    "authors": [
+        {
+            "name": "Majid Shafaei",
+            "email": "majidshafaei88@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "KnightsGame\\": "src"
+        }
+    },
+    "require": {}
+}
