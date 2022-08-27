@@ -4,12 +4,17 @@
 namespace KnightsGame\Classes;
 
 
+use Exception;
+
 class Game
 {
+    /** @var CircularIterator */
     private CircularIterator $players;
 
+
     /**
-     * @throws \Exception
+     * @param CircularIterator $players
+     * @throws Exception
      */
     public function __construct(CircularIterator $players)
     {
@@ -18,7 +23,7 @@ class Game
                 $players[$i]->setScore(100);
             } else {
                 print_r($players[$i]);
-                throw new \Exception("Player is not valid!");
+                throw new Exception("Player is not valid!");
             }
         }
 
@@ -31,22 +36,30 @@ class Game
      */
     public function start()
     {
+        $count = $this->players->count();
         echo "********** Game started **********" . PHP_EOL;
-        echo "#Players Count: " . $this->players->count() . PHP_EOL;
+        echo "#Players Count: " . $count . PHP_EOL;
 
         $round = 1;
-        while ($this->players->count() > 1) {
+        while ($count > 1) {
+
+            /** @var Player $currentPlayer */
             $currentPlayer = $this->players->current();
+
             $dice = rand(1, 6);
             echo "#Round: " . $round . " #Player: " . $currentPlayer->getName() . " #score:" . $currentPlayer->getScore() . " #dice: " . $dice . PHP_EOL;
 
             $this->players->next();
+
+            /** @var Player $nextPlayer */
             $nextPlayer = $this->players->current();
+
             $nextPlayer->setScore($nextPlayer->getScore() - $dice);
             if ($nextPlayer->getScore() <= 0) {
                 echo "***Looser: " . $nextPlayer->getName() . " #score:" . $nextPlayer->getScore() . PHP_EOL;
                 $this->players->offsetUnset($this->players->key());
                 $this->players->next();
+                $count--;
             }
 
             $round++;
